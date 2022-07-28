@@ -1,28 +1,53 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+  <v-app>
+    <v-main>
+      <notebook-component
+        @change-page="changePage"
+        :pages="pages"
+        :activePage="index"
+      ></notebook-component>
+      <page-component
+        @save-page="savePage"
+        @delete-page="deletePage"
+        :page="pages[index]"
+      ></page-component>
+    </v-main>
+  </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import NotebookComponent from "./components/NotebookComponent.vue";
+import PageComponent from "./components/PageComponent.vue";
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
-}
-</script>
+  name: "App",
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
+  components: { NotebookComponent, PageComponent },
+
+  data: () => ({
+    pages: [],
+    index: 0,
+  }),
+
+  methods: {
+    newPage() {
+      this.pages.push({
+        title: "",
+        content: "",
+      });
+      this.index = this.pages.length - 1;
+    },
+
+    changePage(index) {
+      this.index = index;
+    },
+
+    savePage() {
+
+    },
+    deletePage() {
+      this.pages.splice(this.index, 1);
+      this.index = Math.max(this.index - 1, 0);
+    }
+  },
+};
+</script>
